@@ -1,0 +1,99 @@
+<!-- 头部自定义标题 -->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{false}}">
+	<view slot="content">一册时光</view>
+</cu-custom>
+
+<!-- 顶部step进度条 -->
+<view class="bg-white padding">
+	<view class="cu-steps">
+		<view class="cu-item {{index>step?'':'text-blue'}}" wx:for="{{stepList}}" wx:key="key">
+			<text class="num" data-index="{{index + 1}}"></text> {{item.name}}
+		</view>
+	</view>
+</view>
+
+<!-- 欢迎页面 -->
+<view class="welcome" hidden="{{!welcomeDisplay}}">
+	<view class="cu-bar bg-white margin-top padding" style="align-items: center; display: flex; justify-content: center;">
+		<image src="/images/xcx_xcxm.jpg" class="jpg" mode="widthFix" style="width: 40%; margin-top: 15px; margin-bottom: 15px"></image>
+		<view class="cu-bar bg-white" style="align-items: center;  justify-content: center;">
+			<view class="flex-sub text-center">
+				<view class="text-xl padding">
+					<text class="text-black text-bold">一册时光</text>
+				</view>
+				将美好与记忆记录成册
+				<view>
+					<view class="cu-bar bg-white" style="align-items: center; display: flex; justify-content: center;">
+						<view class="padding-xs">
+							<view class="cu-tag bg-red">相册</view>
+							<view class="cu-tag bg-cyan">智能</view>
+							<view class="cu-tag bg-orange">群组</view>
+							<view class="cu-tag bg-blue">回忆</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="padding bg-white">
+		<view class="text-left padding">一册时光是一款基于人工智能的相册小程序，您可以建立专属您自己的相册，自己上传管理或者与朋友共同上传管理这个相册，在未来的某个时间点，您可以通过文本描述，搜索他们：时光，不仅仅是被封存的图片，更是可以通过文字描述，回忆起的，寻找到的，那一段往事。</view>
+	</view>
+	<button class="cu-btn block bg-blue margin-tb-sm lg" bindtap="loginSteps">下一步</button>
+</view>
+
+<!-- 协议页面 -->
+<view class="document" hidden="{{!documentDisplay}}">
+	<view class='margin-xl bg-white padding-xl radius shadow-lg'>
+		<view class='text-center margin-bottom text-lg  text-grey'>《一册时光》用户协议</view>
+		<view class='text-content'>
+			<view>Hi！感谢您使用《一册时光》小程序，当前页面是《一册时光》小程序的用户协议，请您在阅读完成以下协议后再决定是否点击下一步，并且继续使用该小程序，如果您不同意以下协议内容，请您关闭该小程序，感谢您的支持和关注。</view>
+			<view class='margin-top-sm'>1. 该小程序是一款基于人工智能的微信小程序，您上传图片后，系统会默认对您的图片进行一些信息提取并且存储，便于您日后的检索，这里面所涉及到的信息提取和存储均是保密行为，不会以任何理由、任何形式泄露给他人；</view>
+			<view class='margin-top-sm'>2. 当年同意本协议并开始使用，系统会默认获取您的微信昵称、ID以及微信头像作为您的登陆凭证，即使您更换了手机，只要是在该微信下使用该小程序，系统会默认认为您是已注册的用户；</view>
+			<view class='margin-top-sm'>3. 在您设定图片或者相册分享给第三方好友之后，系统会将您指定的图片或者相册的权限开放给您指定的人，如果您错误的将授权分享给他人您可以在相册管理页面随时关闭权限，如果未及时关闭导致图片泄漏，损失将由您自行承担；</view>
+			<view class='margin-top-sm'>4. 该小程序是Anycodes Team进行开发和维护，作为免费的学习性的小程序进行定位，请勿用于商业或者存储极为重要，珍贵的数据；该小程序的最终解释权归Anycodes Team所有；</view>
+		</view>
+	</view>
+	<button class="cu-btn block bg-blue margin-tb-sm lg" bindtap="loginSteps">同意以上协议</button>
+</view>
+
+<!-- 授权页面 -->
+<view class="login" hidden="{{!loginDisplay}}">
+	<view class="padding bg-white margin-top">
+		<view class="text-left padding">确定授权将会：</view>
+		<view class="text-center ">获取您头像和昵称</view>
+		<view class="text-center "><text class="cuIcon-unfold lg text-gray"></text></view>
+		<view class="text-center ">默认注册该小程序</view>
+		<view class="text-center "><text class="cuIcon-unfold lg text-gray"></text></view>
+		<view class="text-center ">开始一册时光之旅</view>
+	</view>
+	<button class="cu-btn block bg-blue margin-tb-sm lg" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> <text class="{{logining?'cuIcon-loading2':''}} iconfont-spin"></text> {{loginText}} </button>
+</view>
+
+<!-- 开始页面 -->
+<view class="start" hidden="{{!startDisplay}}">
+	<view class="padding bg-white margin-top">
+		<view class="text-left padding">您已经完成授权并登陆：</view>
+	</view>
+	<view class="padding bg-white" style="align-items: center; display: flex; justify-content: center;">
+		<view class="cu-avatar round lg" style="background-image:url({{userInfo.avatarUrl}});">
+			<view class="cu-tag badge {{userInfo.gender==0?'cuIcon-female bg-pink':'cuIcon-male bg-blue'}}"></view>
+		</view>
+		<view class="padding bg-white">
+			<view class="text-left">昵称：{{userInfo.nickName}}</view>
+			<view class="text-left">地区：{{userInfo.country}} {{userInfo.province}} {{userInfo.city}}</view>
+		</view>
+	</view>
+	<button class="cu-btn block bg-blue margin-tb-sm lg" bindtap="goIndex">进入《一册时光》</button>
+</view>
+
+<!-- 底部版权栏目 -->
+<text>\n\n\n\n</text>
+<view class="bg-white" style="width: 100%; bottom:0px; position: fixed;">
+	<view class="text-center">
+		<view class="padding-lr margin-top">
+			<view class="solid-bottom padding">
+				<text class="text-Abc">@ Anycodes</text>
+			</view>
+		</view>
+	</view>
+</view>

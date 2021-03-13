@@ -1,0 +1,139 @@
+<!-- 头部自定义标题 -->
+<cu-custom bgColor="bg-gradual-blue" isCustom="{{true}}">
+	<view slot="content">个人中心</view>
+</cu-custom>
+
+<!-- main -->
+
+<view class="UCenter-bg" style="background-image: '/images/homebg.pngs'">
+	<view class="cu-avatar round lg" style="background-image:url({{userInfo.avatarUrl}});">
+		<view class="cu-tag badge {{userInfo.gender==0?'cuIcon-female bg-pink':'cuIcon-male bg-blue'}}"></view>
+	</view>
+	<view class="text-xl padding-top">{{userInfo.nickName}}</view>
+	<view class="margin-top-sm">
+		<text>{{userInfo.country}} {{userInfo.province}}</text>
+	</view>
+</view>
+
+<view class="cu-list menu-avatar">
+	<view class="cu-item" bindtap="recycle">
+		<view class="cu-avatar round lg bg-gradual-blue"><text class="cuIcon-footprint red"></text></view>
+		<view class="content">
+			<view class="text-grey">后悔药</view>
+			<view class="text-gray text-sm flex">
+				<text class="text-cut">
+							<text></text> 有些记忆不应该被删除，每个人都有后悔的机会
+				</text>
+			</view>
+		</view>
+	</view>
+  <view class="cu-item" bindtap="friends">
+		<view class="cu-avatar round lg bg-gradual-blue"><text class="cuIcon-friend"></text></view>
+		<view class="content">
+			<view class="text-grey">互动站</view>
+			<view class="text-gray text-sm flex">
+				<text class="text-cut">
+							<text></text> 和你有过交集的小伙伴，都会在这里显示
+				</text>
+			</view>
+		</view>
+	</view>
+  <view class="cu-item" bindtap="blacklist">
+		<view class="cu-avatar round lg bg-gradual-blue"><text class="cuIcon-bad"></text></view>
+		<view class="content">
+			<view class="text-grey">黑名单</view>
+			<view class="text-gray text-sm flex">
+				<text class="text-cut">
+							<text></text> 不想看到的人，统统拉黑掉
+				</text>
+			</view>
+		</view>
+	</view>
+  <view class="cu-item" bindtap="about">
+		<view class="cu-avatar round lg bg-gradual-blue"><text class="cuIcon-pic"></text></view>
+		<view class="content">
+			<view class="text-grey">关于我们</view>
+			<view class="text-gray text-sm flex">
+				<text class="text-cut">
+							<text></text> 这里就是一册时光，最深的记忆
+				</text>
+			</view>
+		</view>
+	</view>
+  <view class="cu-item" bindtap="cancellation">
+		<view class="cu-avatar round lg bg-gradual-blue"><text class="cuIcon-roundclose"></text></view>
+		<view class="content">
+			<view class="text-grey">注销账号</view>
+			<view class="text-gray text-sm flex">
+				<text class="text-cut">
+							<text></text> 只要注销，就真的什么都没有了
+				</text>
+			</view>
+		</view>
+	</view>
+</view>
+
+<!-- 关于我们弹窗信息 -->
+<view class="cu-modal {{about ?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">关于我们</view>
+      <view class="action" bindtap="closeAbout">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl text-left">
+      一册时光是一款基于人工智能的相册小程序，您可以建立专属您自己的相册，自己上传管理或者与朋友共同上传管理这个相册，在未来的某个时间点，您可以通过文本描述，搜索他们：时光，不仅仅是被封存的图片，更是可以通过文字描述，回忆起的，寻找到的，那一段往事。<text>\n</text>
+      该小程序是Anycodes Team进行开发和维护，作为免费的学习性的小程序进行定位，请勿用于商业或者存储极为重要，珍贵的数据；该小程序的最终解释权归Anycodes Team所有
+    </view>
+   <view class="cu-bar bg-white">
+      <view class="action margin-0 flex-sub  solid-left" bindtap="closeAbout">我知道了</view>
+    </view>
+  </view>
+</view>
+
+<!-- 注销弹窗信息 -->
+<view class="cu-modal {{cancellation ?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">注销说明</view>
+      <view class="action" bindtap="closeCancellation">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl text-left">
+      当您注销账号之后，系统会在1个工作日内删掉您的全部个人信息，您需要在注销前备份好个人账号信息。感谢您对该软件的支持。
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-blue text-blue" bindtap="closeCancellation" style="width: 100px">取消</button>
+        <button class="cu-btn bg-gradual-blue margin-left" bindtap="confirmCancellation" style="width: 100px; margin-left: 10px">注销</button>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 底部信息栏目 -->
+<text>\n\n\n\n\n\n</text>
+<view class="cu-bar tabbar bg-white foot">
+	<view class="action text-gray" bindtap="timeline">
+		<view class="cuIcon-album"></view> 时光
+	</view>
+	<view class="action text-gray" bindtap="find">
+		<view class="cuIcon-new"></view> 发现
+	</view>
+	<view class="action text-gray add-action" bindtap="upload">
+		<button class="cu-btn cuIcon-upload bg-gradual-blue shadow"></button>
+		上传
+	</view>
+	<view class="action text-gray" bindtap="manage">
+		<view class="cuIcon-apps">
+		</view>
+		管理
+	</view>
+	<view class="action text-blue">
+		<view class="cuIcon-my">
+		</view>
+		我的
+	</view>
+</view>

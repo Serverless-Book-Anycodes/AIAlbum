@@ -1,0 +1,28 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/share/index",
+    "pages/blacklist/index",
+    "pages/friends/index",
+    "pages/recycle/index",
+    "pages/find/index",
+    "pages/albumInformation/index",
+    "pages/upload/index",
+    "pages/manage/index",
+    "pages/home/index",
+    "pages/login/index",
+    "pages/album/index"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "一册时光",
+    "navigationBarTextStyle": "black"
+  },
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

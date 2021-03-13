@@ -1,0 +1,6 @@
+/* pages/manage/index.wxss */
+.addAlbum {
+  position:fixed;
+  right: 10px;
+  bottom:65px;
+  }

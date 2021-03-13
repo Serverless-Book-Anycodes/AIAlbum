@@ -1,0 +1,70 @@
+<!-- 头部自定义标题 -->
+<cu-custom bgColor="bg-gradual-blue" isCustom="{{true}}">
+	<view slot="content">互动过的朋友</view>
+</cu-custom>
+
+<!-- main -->
+<scroll-view scroll-y class="indexes" scroll-into-view="indexes-{{listCurID}}" style="height:calc(100vh - {{CustomBar}}px - 50px)" scroll-with-animation="true" enable-back-to-top="true">
+  <block wx:for="{{userIndexList}}" wx:key="item">
+    <view class="padding indexItem-{{userIndexList[index]}}" id="indexes-{{userIndexList[index]}}" data-index="{{userIndexList[index]}}">{{userIndexList[index]}}</view>
+    <view class="cu-list menu-avatar no-padding">
+      <view class="cu-item" wx:for="{{userList[userIndexList[index]]}}" wx:key="subindex" wx:for-index="sub" bindlongpress="userAction" data-index="{{userIndexList[index]}}" data-user="{{sub}}">
+        <view class="cu-avatar round lg" style="background-image:url({{userList[userIndexList[index]][sub]['image']}});"></view>
+        <view class="content">
+          <view class="text-grey">
+            <text class="text-abc">{{userList[userIndexList[index]][sub]['name']}}</text></view>
+          <view class="text-gray text-sm">
+            {{userList[userIndexList[index]][sub]['information']}}
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+</scroll-view>
+<view class="indexBar" style="height:calc(100vh - {{CustomBar}}px - 50px)">
+  <view class="indexBar-box" bindtouchstart="tStart" bindtouchend="tEnd" catchtouchmove="tMove">
+    <view class="indexBar-item" wx:for="{{userIndexList}}" wx:key="item" id="{{index}}" bindtouchstart="getCur" bindtouchend="setCur">{{userIndexList[index]}}</view>
+  </view>
+</view>
+<!-- 选择显示 -->
+<view hidden="{{hidden}}" class="indexToast">
+  {{listCur}}
+</view>
+
+<!-- 操作详情 -->
+<view class="cu-modal bottom-modal {{longPressAction ?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white">
+      <view class="action text-green" bindtap="userActionConfirm">确定</view>
+      <view class="action text-blue" bindtap="userActionClose">取消</view>
+    </view>
+    <view class="padding-xl">
+      是否要将{{currentUser.name}}拉入黑名单，并且不再与其共享相册。
+    </view>
+  </view>
+</view>
+
+<!-- 底部信息栏目 -->
+<text>\n\n\n\n\n\n</text>
+<view class="cu-bar tabbar bg-white foot">
+	<view class="action text-gray" bindtap="timeline">
+		<view class="cuIcon-album"></view> 时光
+	</view>
+	<view class="action text-gray" bindtap="find">
+		<view class="cuIcon-new"></view> 发现
+	</view>
+	<view class="action text-gray add-action">
+		<button class="cu-btn cuIcon-upload bg-gradual-blue shadow"></button>
+		上传
+	</view>
+	<view class="action text-grat" bindtap="manage">
+		<view class="cuIcon-apps">
+		</view>
+		管理
+	</view>
+	<view class="action text-blue" bindtap="home">
+		<view class="cuIcon-my">
+		</view>
+		我的
+	</view>
+</view>

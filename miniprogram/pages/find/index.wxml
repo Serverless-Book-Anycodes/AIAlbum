@@ -1,0 +1,111 @@
+<!-- 头部自定义标题 -->
+<cu-custom bgColor="bg-gradual-blue" isCustom="{{true}}">
+	<view slot="content">一册时光</view>
+</cu-custom>
+
+<!-- 搜索等功能 -->
+<view class="cu-bar bg-white search fixed margin-top" style="top:{{customBar-15}}px">
+	<view class="text-left padding"><text class="cuIcon-emoji text-blue"></text> {{sentence}}</view>
+</view>
+<view class="cu-bar bg-white margin-top" style="margin-top:60px">
+	<view class="action">
+		<text class="cuIcon-title text-blue"></text>AI-的图像搜索
+	</view>
+</view>
+<view class="cu-bar bg-white search padding">
+	<view class="search-form round">
+		<text class="cuIcon-search"></text>
+		<input type="text" placeholder="输入图片内容，快速查找" confirm-type="search" bindinput="searchInput"></input>
+	</view>
+	<button class="cu-btn round line-blue" style="width: 80px; margin-right: 10px" bindtap="searchPhoto">搜索</button>
+</view>
+<view class="cu-bar bg-white">
+	<view class="padding-sm flex flex-wrap">
+		<view class="padding-xs" wx:for="{{tagsShow}}" wx:key="item">
+			<view class="cu-tag bg-{{item.color}}" bindtap="searchTags" data-value="{{item.name}}">{{item.name}}</view>
+		</view>
+	</view>
+</view>
+
+<view wx:if="{{resultShow}}">
+	<view class="cu-bar bg-white margin-top">
+		<view class="action">
+			<text class="cuIcon-title text-blue"></text>过去与回忆成册
+		</view>
+	</view>
+	<view class="cu-timeline" wx:for="{{photoList}}" wx:key="item">
+		<view class="cu-time" style="margin-left: 10px">{{item.date}}</view>
+		<view class="cu-item">
+			<view class="content bg-{{photoListColor[item.id%2]}}">
+				<view class="cu-capsule radius">
+					<view class="cu-tag bg-{{item.id%2==0 ? 'cyan' : 'white'}}"><text class="cuIcon-location text-{{item.id%2==0 ? 'grap' : 'blue'}}"></text></view>
+					<view class="cu-tag line-{{item.id%2==0 ? 'cyan' : 'white'}}">{{item.location}}</view>
+				</view>
+				<view class="margin-top">
+					<image src="{{item.pictureThumbnail}}" mode="widthFix" bindtap="preImage" data-index="{{index}}" bindlongpress="photoLongClick"></image>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+
+<!-- 删除确定 -->
+<view class="cu-modal bottom-modal {{deletePhotoShow?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white">
+			<view class="action text-green" bindtap="deletePhoto" data-id="{{deletePhotoIndex}}">确定</view>
+			<view class="action text-blue" bindtap="hideDeleteModal">取消</view>
+		</view>
+		<view class="padding-xl">
+			请问您确定要删除这个图片么？
+		</view>
+	</view>
+</view>
+
+<!-- 图片浮层 -->
+<view class="cu-modal {{currentPhotoShow ?'show':''}}">
+	<view class="cu-dialog">
+		<view class="bg-img" style="background-image: url('{{currentPhotoUrl}}');height:200px;" bindtap="photoClick" data-url="{{currentPhotoUrl}}">
+		</view>
+		<view class="cu-bar bg-white">
+			<view class="action margin-0 flex-sub solid-left" bindtap="photoClick" data-url="{{currentPhotoUrl}}">预览图片</view>
+		</view>
+		<view class="cu-bar bg-white">
+			<view class="action margin-0 flex-sub solid-left" bindtap="copyLink" data-url="{{currentPhotoUrl}}">复制临时地址</view>
+		</view>
+		<view class="cu-bar bg-white">
+			<view class="action margin-0 flex-sub solid-left" bindtap="toAlbum" data-name="photo">进入相册 {{}}</view>
+		</view>
+		<view class="cu-bar bg-white">
+			<view class="action margin-0 flex-sub solid-left" bindtap="saveToPhone" data-url="{{currentPhotoUrl}}">保存本地</view>
+		</view>
+		<view class="cu-bar bg-white">
+			<view class="action margin-0 flex-sub solid-left" bindtap="hideModal">关闭窗口</view>
+		</view>
+	</view>
+</view>
+
+<!-- 底部信息栏目 -->
+<text>\n\n\n\n\n\n</text>
+<view class="cu-bar tabbar bg-white foot">
+	<view class="action text-gray" bindtap="timeline">
+		<view class="cuIcon-album"></view> 时光
+	</view>
+	<view class="action text-blue">
+		<view class="cuIcon-new"></view> 发现
+	</view>
+	<view class="action text-gray add-action" bindtap="upload">
+		<button class="cu-btn cuIcon-upload bg-gradual-blue shadow"></button>
+		上传
+	</view>
+	<view class="action text-gray" bindtap="manage">
+		<view class="cuIcon-apps">
+		</view>
+		管理
+	</view>
+	<view class="action text-gray" bindtap="home">
+		<view class="cuIcon-my">
+		</view>
+		我的
+	</view>
+</view>

@@ -1,0 +1,83 @@
+Global:
+  Service:
+    Description: 基于函数计算的人工智能相册系统
+    InternetAccess: true
+    Role: 'acs:ram::1583208943291465:role/al-album'
+    Name: ai-album
+    Vpc:
+      SecurityGroupId: sg-j6c45wkv4vf4ghg104mc
+      VSwitchIds:
+        - vsw-j6c797ywau90y6y03ohbq
+      VpcId: vpc-j6c9lk4av0859r4e0tff7
+    Nas: Auto
+    Log:
+      LogStore: functions
+      Project: ai-album
+
+OSSCallback:
+  Component: fc
+  Provider: alibaba
+  AccessAlias: ''
+  Properties:
+    Region: cn-hongkong
+    Service: '${Global.Service}'
+    Function:
+      Name: oss-callback
+      CodeUri:
+        Src: ./oss_callback/backend
+        Excludes:
+          - oss_callback/backend/.fun
+          - oss_callback/backend/image_caption
+      Handler: index.handler
+      Environment:
+        - Key: PYTHONUSERBASE
+          Value: /mnt/auto/.fun/python
+      MemorySize: 3072
+      Runtime: python3
+      Timeout: 60
+      Triggers:
+        - Name: serverless-ai-album
+          Type: OSS
+          Parameters:
+            Qualifier: LATEST
+            Bucket: serverless-ai-album
+            Events:
+              - 'oss:ObjectCreated:*'
+            InvocationRole: 'acs:ram::1583208943291465:role/ai-album-1608948287491-role'
+            Filter:
+              Prefix: photo/original
+              Suffix: ''
+APIServer:
+  Component: fc
+  Provider: alibaba
+  Access: default
+  Properties:
+    Region: cn-hongkong
+    Service: '${Global.Service}'
+    Function:
+      Name: api-server
+      CodeUri:
+        Src: ./main
+        Excludes:
+          - main/.fun
+      Handler: index.app
+      Environment:
+        - Key: PYTHONUSERBASE
+          Value: /mnt/auto/.fun/python
+      MemorySize: 512
+      Runtime: python3
+      Timeout: 60
+      Triggers:
+        - Name: TriggerNameHttp
+          Type: HTTP
+          Parameters:
+            AuthType: ANONYMOUS
+            Methods:
+              - GET
+              - POST
+            Domains:
+              - Domain: www.aialbum.net
+                Protocol:
+                  - HTTP
+                Routes:
+                  - Path: /*

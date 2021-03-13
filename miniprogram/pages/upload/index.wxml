@@ -1,0 +1,108 @@
+<!-- 头部自定义标题 -->
+<cu-custom bgColor="bg-gradual-blue" isCustom="{{true}}">
+	<view slot="content">上传图片</view>
+</cu-custom>
+
+<!-- 图片表单 -->
+<view class="cu-form-group margin-top">
+	<view class="title">选择相册</view>
+	<picker bindchange="selectAlbum" value="{{album[index].id}}" range="{{album}}" range-key="name">
+		<view class="picker">
+			{{album[index].name}}
+		</view>
+	</picker>
+
+</view>
+<view >
+	<view class="cu-form-group">
+		<view class="title">图片压缩</view>
+		<radio-group class="block">
+		<text>压缩</text>
+		<radio checked="{{imageType === 0 ? true : false}}" class="blue radio" style="margin-left: 10px; margin-right: 10px" data-value="0" bindtap="imageTypeAction"></radio>
+		<text>原图</text>
+		<radio checked="{{imageType === 1 ? true : false}}" class="blue radio" style="margin-left: 10px; margin-right: 10px" data-value="1" bindtap="imageTypeAction"></radio>
+	</radio-group>
+	</view>
+</view>
+
+<view class="cu-bar bg-white">
+	<view class="action">
+		图片上传
+	</view>
+	<view class="action">
+		{{imgList.length}}
+	</view>
+</view>
+
+<view class="cu-form-group">
+	<view class="grid col-4 grid-square flex-sub">
+		<view class="bg-img" wx:for="{{imgList}}" wx:key="index" bindtap="viewImage" data-url="{{imgList[index]}}" bindlongtap="deleteImage" data-index="{{index}}">
+			<image src='{{imgList[index]}}' mode='aspectFill'></image>
+			<view class="cu-tag bg-red" wx:if="{{imgListState[index]=='complete'}}">
+				<text class="cuIcon-check bg-green"></text>
+			</view>
+			<view class="cu-tag bg-red" wx:elif="{{imgListState[index]=='uploading'}}">
+				<text class="cuIcon-upload bg-blue"></text>
+			</view>
+			<view class="cu-tag bg-red" wx:elif="{{imgListState[index]=='warn'}}">
+				<text class="cuIcon-warn bg-red"></text> 
+			</view>
+		</view>
+		<view class="solids" bindtap="chooseImage" wx:if="{{imgList.length<50}}">
+			<text class="cuIcon-cameraadd"></text>
+		</view>
+	</view>
+</view>
+<view class="cu-bar bg-white justify-end padding-right">
+	<view class="text-xs">
+		<text class="cuIcon-question lg text-gray"></text><text class="text-gray">每次可以选择9张图片，推荐每次最多选择36张图\n</text>
+		<text class="cuIcon-question lg text-gray"></text><text class="text-gray">长按图片可以删除图片</text>
+	</view>
+</view>
+
+<button class="cu-btn block bg-gradual-blue margin-tb-sm lg" style="width: 90%" bindtap="uploadData">
+	<text class="{{buttonIcon}}"></text> {{buttonTitle}}
+</button>
+
+<!-- 密码 -->
+<view class="cu-modal {{password ? 'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">相册密码</view>
+			<view class="action" bindtap="hidePassword">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="padding-xl">
+			<input placeholder="请输入密码" type="password" bindblur="inputPassword" data-name="password"></input>
+		</view>
+		<view class="cu-bar bg-white">
+			<button class="cu-btn bg-green" bindtap="gettedPassword">确定</button>
+		</view>
+	</view>
+</view>
+
+<!-- 底部信息栏目 -->
+<text>\n\n\n\n\n\n</text>
+<view class="cu-bar tabbar bg-white foot">
+	<view class="action text-gray" bindtap="timeline">
+		<view class="cuIcon-album"></view> 时光
+	</view>
+	<view class="action text-gray" bindtap="find">
+		<view class="cuIcon-new"></view> 发现
+	</view>
+	<view class="action text-blue add-action">
+		<button class="cu-btn cuIcon-upload bg-gradual-blue shadow"></button>
+		上传
+	</view>
+	<view class="action text-grat" bindtap="manage">
+		<view class="cuIcon-apps">
+		</view>
+		管理
+	</view>
+	<view class="action text-gray" bindtap="home">
+		<view class="cuIcon-my">
+		</view>
+		我的
+	</view>
+</view>

@@ -1,0 +1,67 @@
+<!-- 头部自定义标题 -->
+<cu-custom bgColor="bg-gradual-blue" isCustom="{{true}}">
+	<view slot="content">图片回收站</view>
+</cu-custom>
+
+<!-- main -->
+<view class="cu-card case">
+  <view class="cu-item shadow" wx:for="{{pictureList}}" wx:key="index" data-index="{{index}}" bindlongpress="pictureActionOpen">
+    <view class="image">
+      <image src="{{pictureList[index].picture}}" mode="widthFix"></image>
+    </view>
+    <view class="cu-list padding" >
+      <view class="cu-item">
+			 <view class="content flex-sub">
+					<text class="cuIcon-roundadd text-green"></text> {{pictureList[index].create}}
+          <text class="cuIcon-delete padding-left text-red"></text> {{pictureList[index].delete}}
+					<text class="cuIcon-pic padding-left text-blue"></text> {{pictureList[index].album}}
+				</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 图片操作 -->
+<view class="cu-modal {{pictureAction ?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">操作框</view>
+      <view class="action" bindtap="pictureActionClose">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      您想要将该图片：
+    </view>
+    <view class="cu-bar bg-white">
+      <view class="action margin-0 flex-sub text-green solid-left" bindtap="pictureActionRecovery">恢复</view>
+      <view class="action margin-0 flex-sub text-red solid-left" bindtap="pictureActionDelete">删除</view>
+      <view class="action margin-0 flex-sub text-blue solid-left" bindtap="pictureActionClose">取消</view>
+    </view>
+  </view>
+</view>
+
+<!-- 底部信息栏目 -->
+<text>\n\n\n\n\n\n</text>
+<view class="cu-bar tabbar bg-white foot">
+	<view class="action text-gray" bindtap="timeline">
+		<view class="cuIcon-album"></view> 时光
+	</view>
+	<view class="action text-gray" bindtap="find">
+		<view class="cuIcon-new"></view> 发现
+	</view>
+	<view class="action text-gray add-action">
+		<button class="cu-btn cuIcon-upload bg-gradual-blue shadow"></button>
+		上传
+	</view>
+	<view class="action text-grat" bindtap="manage">
+		<view class="cuIcon-apps">
+		</view>
+		管理
+	</view>
+	<view class="action text-blue" bindtap="home">
+		<view class="cuIcon-my">
+		</view>
+		我的
+	</view>
+</view>

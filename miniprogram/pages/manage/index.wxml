@@ -1,0 +1,82 @@
+<!-- 头部自定义标题 -->
+<cu-custom bgColor="bg-gradual-blue" isCustom="{{true}}">
+	<view slot="content">一册时光</view>
+</cu-custom>
+
+<!-- 新增搜索等功能 -->
+<view class="cu-bar bg-white search fixed" style="top:{{customBar}}px">
+	<view class="search-form round">
+		<text class="cuIcon-search"></text>
+		<input type="text" placeholder="搜索相册" confirm-type="search" bindinput="searchAlbum"></input>
+	</view>
+</view>
+<text>\n\n\n\n</text>
+
+<!-- 相册列表 -->
+<view class="cu-list menu-avatar">
+	<view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{albumList}}" wx:key="item" bindtouchstart="listTouchStart" bindtouchmove="listTouchMove" bindtouchend="listTouchEnd" data-target="move-box-{{index}}">
+		<view class="cu-avatar radius lg" style="background-image:url({{albumList[index].picture}});"></view>
+		<view class="content" bindtap="toInformation" data-index="{{index}}">
+			<view>
+				<text class="text-cut">{{albumList[index].name}}</text>
+			</view>
+			<view class="text-gray text-sm flex">
+				<view class="{{albumList[index].tags[tagIndex].value ? 'cu-tag' : ''}}" wx:for="{{albumList[index].tags}}" wx:key="tagItem" wx:for-index="tagIndex" wx:if="{{albumList[index].tags[tagIndex].value}}">
+					<text class="cuIcon-{{albumList[index].tags[tagIndex].key == 'count' ? 'moreandroid' : albumList[index].tags[tagIndex].key }} lg"></text>
+					{{albumList[index].tags[tagIndex].value}}
+				</view>
+			</view>
+		</view>
+		<view class="action">
+			<view class="flex justify-end" hidden="{{!albumList[index].owner}}">
+				<view class="cu-tag"><text class="cuIcon-peoplelist"></text></view>
+			</view>
+		</view>
+		<view class="move">
+			<view class="bg-red" bindtap="deleteAlbumModal" data-id="{{index}}">{{albumList[index].owner ? '删除相册' : '移除相册'}}</view>
+		</view>
+	</view>
+</view>
+
+<!-- 删除确定 -->
+<view class="cu-modal bottom-modal {{deleteAlbum?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white">
+			<view class="action text-green" bindtap="deleteAlbum" data-id="{{deleteAlbumIndex}}">确定</view>
+			<view class="action text-blue" bindtap="hideDeleteModal">取消</view>
+		</view>
+		<view class="padding-xl">
+			请问您确定要删除这个相册么？
+		</view>
+	</view>
+</view>
+
+<!-- 浮动添加 -->
+<view class="addAlbum" bindtap="toInformation">
+	<view class="cu-avatar round lg bg-gradual-blue"><text class="cuIcon-add lg"></text></view>
+</view>
+
+<!-- 底部信息栏目 -->
+<text>\n\n\n\n\n\n</text>
+<view class="cu-bar tabbar bg-white foot">
+	<view class="action text-gray" bindtap="timeline">
+		<view class="cuIcon-album"></view> 时光
+	</view>
+	<view class="action text-gray" bindtap="find">
+		<view class="cuIcon-new"></view> 发现
+	</view>
+	<view class="action text-gray add-action" bindtap="upload">
+		<button class="cu-btn cuIcon-upload bg-gradual-blue shadow"></button>
+		上传
+	</view>
+	<view class="action text-blue">
+		<view class="cuIcon-apps">
+		</view>
+		管理
+	</view>
+	<view class="action text-gray" bindtap="home">
+		<view class="cuIcon-my">
+		</view>
+		我的
+	</view>
+</view>

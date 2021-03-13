@@ -1,0 +1,180 @@
+<view bindtouchmove="touchmoveCallback" bindtouchend="touchendCallback" style="width: {{bgWidth}}px; height: {{bgHeight}}px;">
+	<!-- 头部自定义标题 -->
+	<cu-custom bgColor="bg-gradual-blue" isCustom="{{true}}">
+		<view slot="content">{{albumName}}</view>
+	</cu-custom>
+
+	<!-- 图片列表 -->
+	<view wx:if="{{rowCount==1}}">
+		<view class="cu-card case" wx:for="{{photoList}}" wx:key="item">
+			<view class="cu-item shadow">
+				<view class="image">
+					<image src="{{photoList[index].pictureThumbnail}}" mode="widthFix" bindtap="photoClick" bindlongpress="photoLongClick" data-index="{{index}}"></image>
+					<view class="flex justify-end" hidden="{{photoList[index].owner}}">
+						<view class="cu-tag bg-blue"><text class="cuIcon-peoplelist"></text></view>
+					</view>
+					<view class="cu-bar bg-shadeBottom margin-bottom">
+						<text class="text">{{photoList[index].description || ""}}\n</text>
+					</view>
+					<view class="cu-bar bg-shadeBottom justify-end margin-top">
+						<text class="text-cut">\n{{photoList[index].date}}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<view wx:else>
+		<view class="grid col-{{rowCount}} text-center">
+			<view class="cu-card case" style="padding:2px" wx:for="{{photoList}}" wx:key="item">
+				<view class="image">
+					<image src="{{photoList[index].pictureThumbnail}}" mode="aspectFill" bindtap="photoClick" bindlongpress="photoLongClick" data-index="{{index}}" style="height: {{rowWidthHeight}}px"></image>
+					<view wx:if="{{rowCount<=3}}">
+						<view class="flex justify-end" hidden="{{photoList[index].owner}}">
+							<view class="cu-tag bg-blue"><text class="cuIcon-peoplelist"></text></view>
+						</view>
+						<view class="cu-bar bg-shadeBottom  justify-end">
+							<text class="text-cut">{{photoList[index].date}}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<!-- 图片浮层 -->
+	<view class="cu-modal {{currentPhotoShow ?'show':''}}">
+		<view class="cu-dialog">
+			<view class="bg-img" style="background-image: url('{{currentPhotoUrl}}');height:200px;" bindtap="photoClick" data-url="{{currentPhotoUrl}}">
+			</view>
+			<!-- <view class="cu-bar bg-white">
+				<view class="action margin-0 flex-sub solid-left" bindtap="photoClick" data-url="{{currentPhotoUrl}}">预览图片</view>
+			</view> -->
+			<view class="cu-bar bg-white">
+				<view class="action margin-0 flex-sub solid-left" bindtap="copyLink" data-url="{{currentPhotoUrl}}">复制临时地址</view>
+			</view>
+			<view class="cu-bar bg-white" wx:if="{{currentPhotoType}}">
+				<view class="action margin-0 flex-sub solid-left" bindtap="deletePhoto">删除图片</view>
+			</view>
+			<view class="cu-bar bg-white" wx:if="{{currentPhotoType}}">
+				<view class="action margin-0 flex-sub solid-left" bindtap="addDescription" data-url="{{currentPhotoUrl}}">添加描述</view>
+			</view>
+			<view class="cu-bar bg-white" wx:if="{{currentPhotoType}}">
+				<view class="action margin-0 flex-sub solid-left" bindtap="sharePhoto">图片分享</view>
+			</view>
+			<view class="cu-bar bg-white">
+				<view class="action margin-0 flex-sub solid-left" bindtap="hideModal">关闭窗口</view>
+			</view>
+		</view>
+	</view>
+
+		<!-- 图片分享浮层 -->
+	<view class="cu-modal {{share ?'show':''}}">
+		<view class="cu-dialog">
+			<view class="bg-img" style="background-image: url('{{currentPhotoUrl}}');height:200px;" bindtap="photoClick" data-url="{{currentPhotoUrl}}">
+			</view>
+			<view class="cu-bar bg-white">
+				<view class="action margin-0 flex-sub solid-left bg-white" bindtap="getShareCode" data-data="1">仅分享一次</view>
+			</view>
+			<view class="cu-bar bg-white">
+				<view class="action margin-0 flex-sub solid-left bg-white" bindtap="getShareCode" data-data="2">每人可查看一次</view>
+			</view>
+			<view class="cu-bar bg-white">
+				<view class="action margin-0 flex-sub solid-left bg-white" bindtap="getShareCode" data-data="3">无限次数查看</view>
+			</view>
+			<view class="cu-bar bg-white">
+				<view class="action margin-0 flex-sub solid-left" bindtap="hideShareModal">关闭窗口</view>
+			</view>
+		</view>
+	</view>
+	<view class="cu-modal {{shareButton ? 'show':''}}">
+		<view class="cu-dialog">
+			<view class="cu-bar bg-white justify-end">
+				<view class="content">分享</view>
+				<view class="action" bindtap="hideShareButton">
+					<text class="cuIcon-close text-red"></text>
+				</view>
+			</view>
+			<view class="cu-bar bg-white" wx:if="{{showShareButtom}}">
+				<button class="cu-btn bg-green" open-type="share">分享</button>
+			</view>
+			<view class="cu-bar bg-white" wx:else>
+				<view class="action margin-0 flex-sub  solid-left" bindtap="hideModal">分享加载中...</view>
+			</view>
+		</view>
+	</view>
+
+
+	<!-- 删除确定 -->
+	<view class="cu-modal bottom-modal {{deletePhotoShow?'show':''}}">
+		<view class="cu-dialog">
+			<view class="cu-bar bg-white">
+				<view class="action text-green" bindtap="deletePhoto" data-id="{{deletePhotoIndex}}">确定</view>
+				<view class="action text-blue" bindtap="hideDeleteModal">取消</view>
+			</view>
+			<view class="padding-xl">
+				请问您确定要删除这个图片么？
+			</view>
+		</view>
+	</view>
+
+	<!-- 描述 -->
+	<view class="cu-modal {{description ? 'show':''}}">
+		<view class="cu-dialog">
+			<view class="cu-bar bg-white justify-end">
+				<view class="content">添加描述</view>
+				<view class="action" bindtap="hideDescription">
+					<text class="cuIcon-close text-red"></text>
+				</view>
+			</view>
+			<view class="padding cu-form-group">
+				<textarea maxlength="-1" bindinput="inputDescription" placeholder="请为图片增加描述"></textarea>
+			</view>
+			<view class="cu-bar bg-white">
+				<button class="cu-btn bg-green" bindtap="gettedDescription">确定</button>
+			</view>
+		</view>
+	</view>
+
+
+	<!-- 密码 -->
+	<view class="cu-modal {{password ? 'show':''}}">
+		<view class="cu-dialog">
+			<view class="cu-bar bg-white justify-end">
+				<view class="content">相册密码</view>
+				<view class="action" bindtap="hidePassword">
+					<text class="cuIcon-close text-red"></text>
+				</view>
+			</view>
+			<view class="padding-xl">
+				<input placeholder="请输入密码" type="password" bindblur="inputPassword" data-name="password"></input>
+			</view>
+			<view class="cu-bar bg-white">
+				<button class="cu-btn bg-green" bindtap="gettedPassword">确定</button>
+			</view>
+		</view>
+	</view>
+
+	<!-- 底部信息栏目 -->
+	<text>\n\n\n\n\n\n</text>
+	<view class="cu-bar tabbar bg-white foot">
+		<view class="action text-blue" bindtap="timeline">
+			<view class="cuIcon-album"></view> 时光
+		</view>
+		<view class="action text-gray" bindtap="find">
+			<view class="cuIcon-new"></view> 发现
+		</view>
+		<view class="action text-gray add-action" bindtap="upload">
+			<button class="cu-btn cuIcon-upload bg-gradual-blue shadow"></button>
+			上传
+		</view>
+		<view class="action text-gray" bindtap="manage">
+			<view class="cuIcon-apps">
+			</view>
+			管理
+		</view>
+		<view class="action text-gray" bindtap="home">
+			<view class="cuIcon-my">
+			</view>
+			我的
+		</view>
+	</view>
+</view>

@@ -1,0 +1,119 @@
+<!-- 头部自定义标题 -->
+<cu-custom bgColor="bg-gradual-blue" isCustom="{{true}}">
+	<view slot="content">{{title}}</view>
+</cu-custom>
+
+
+<!-- 表单 -->
+<view class="cu-form-group margin-top">
+	<view class="title">相册名称</view>
+	<input placeholder="请输入相册名" bindblur="getInputData" data-name="name" value="{{inputData.name}}"></input>
+</view>
+<view class="cu-form-group">
+	<view class="title">记录日期</view>
+	<picker mode="date" value="{{inputData.record_time}}" start="2015-09-01" end="2030-09-01" bindchange="dateChange">
+		<view class="picker">
+			{{inputData.record_time}}
+		</view>
+	</picker>
+</view>
+<view class="cu-form-group">
+	<view class="title">记录地点</view>
+	<input placeholder="记录相册地点" bindblur="getInputData" data-name="place" value="{{inputData.place}}"></input>
+	<text class="cuIcon-locationfill text-blue" ></text>
+</view>
+<view class="cu-form-group">
+	<view class="title">相册权限</view>
+	<radio-group class="block">
+		<text>私密</text>
+		<radio checked="{{inputData.acl === 0 ? true : false}}" class="blue radio" style="margin-left: 10px; margin-right: 10px" data-name="acl" data-value="0" bindtap="getSelectData"></radio>
+		<text>分享</text>
+		<radio checked="{{inputData.acl === 1 ? true : false}}" class="blue radio" style="margin-left: 10px; margin-right: 10px" data-name="acl" data-value="1" bindtap="getSelectData"></radio>
+		<text>共有</text>
+		<radio checked="{{inputData.acl === 2 ? true : false}}" class="blue radio" style="margin-left: 10px; margin-right: 10px" data-name="acl" data-value="2" bindtap="getSelectData"></radio>
+	</radio-group>
+</view>
+<view class="cu-bar bg-white justify-end padding-right text-xs">
+	<text class="cuIcon-question lg text-gray"></text><text class="text-gray">私密相册仅自己可见，分享相册获得链接可见，共有相册可多人管理</text>
+</view>
+<view wx:if="{{inputData.id != undefined}}">
+	<view class="cu-form-group">
+		<view class="title">停止新授权</view>
+		<checkbox class="round" checked="{{inputData.acl_state === 1 ? true : false}}" bindtap="getSelectData" data-name="acl_state" data-value="1"></checkbox>
+	</view>
+</view>
+
+<view class="cu-form-group margin-top">
+	<view class="title">密码访问</view>
+	<input type="{{passwordType}}" placeholder="为相册添加密码" bindblur="getInputData" data-name="password" value="{{inputData.password}}"></input>
+	<text class="cuIcon-{{passwordIcon}} text-blue" bindtap="passwordAction"></text>
+</view>
+<view class="cu-form-group align-start solid-top">
+	<view class="title">简单描述</view>
+	<textarea maxlength="-1" disabled="{{modalName!=null}}" bindinput="textareaBInput" placeholder="在此处输入描述信息" bindblur="getInputData" data-name="description" value="{{inputData.description}}"></textarea>
+</view>
+
+<view class="cu-bar bg-white margin-top">
+	<view class="action">
+		<text class=""></text> 相册标签
+	</view>
+</view>
+<view class="cu-form-group">
+	<view class="padding-sm flex flex-wrap">
+		<view class="padding-xs" wx:for="{{tagsShow}}" wx:key="item">
+			<view class="cu-tag bg-{{item.color}} light" bindtap="deleteTag" data-index="{{index}}">{{item.name}}</view>
+		</view>
+	</view>
+</view>
+<view class="cu-form-group">
+	<input placeholder="输入空格自动分割" bindinput="getTags" value="{{tagsValue}}"></input>
+</view>
+
+
+
+<button class="cu-btn block bg-gradual-blue margin-tb-sm lg" style="width: 90%" bindtap="saveAlbum">
+	<text class="{{loading}} iconfont-spin"></text>保存
+</button>
+
+<!-- 密码 -->
+<view class="cu-modal {{password ? 'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">相册密码</view>
+			<view class="action" bindtap="hidePassword">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="padding-xl">
+			<input placeholder="请输入密码" type="password" bindblur="inputPassword" data-name="password"></input>
+		</view>
+		<view class="cu-bar bg-white">
+			<button class="cu-btn bg-green" bindtap="gettedPassword">确定</button>
+		</view>
+	</view>
+</view>
+
+<!-- 底部信息栏目 -->
+<text>\n\n\n\n\n\n</text>
+<view class="cu-bar tabbar bg-white foot">
+	<view class="action text-gray" bindtap="timeline">
+		<view class="cuIcon-album"></view> 时光
+	</view>
+	<view class="action text-gray" bindtap="find">
+		<view class="cuIcon-new"></view> 发现
+	</view>
+	<view class="action text-gray add-action" bindtap="upload">
+		<button class="cu-btn cuIcon-upload bg-gradual-blue shadow"></button>
+		上传
+	</view>
+	<view class="action text-blue" bindtap="manage">
+		<view class="cuIcon-apps">
+		</view>
+		管理
+	</view>
+	<view class="action text-gray" bindtap="home">
+		<view class="cuIcon-my">
+		</view>
+		我的
+	</view>
+</view>

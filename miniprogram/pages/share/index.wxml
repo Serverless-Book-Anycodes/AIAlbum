@@ -1,0 +1,62 @@
+<!-- 头部自定义标题 -->
+<cu-custom bgColor="bg-gradual-blue" isCustom="{{true}}">
+	<view slot="content">一册时光</view>
+</cu-custom>
+
+<!-- 标题显示 -->
+<view class="cu-bar bg-white margin-top margin-left margin-right">
+	<view class="action">
+		<text class="cuIcon-title text-blue"></text>图片分享
+	</view>
+</view>
+
+<!-- 图片详情 -->
+<view wx:if="{{main == 1 && showDefault}}">
+	<view wx:if="{{show}}">
+		<view class="cu-card case">
+			<view class="cu-item shadow">
+				<view class="image">
+					<image src="{{showPhoto}}" mode="widthFix" bindlongtap="showPicture" bindtouchend="deletePhoto"></image>
+					<view class="cu-tag bg-blue">分享</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<view wx:else>
+		<view class="bg-white padding-lr margin-left margin-right margin-top">
+			<view class="solids-bottom padding-xs flex align-center">
+				<view class="flex-sub text-center">
+					<view class="padding">图片已经被清理</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="cu-list menu-avatar margin-left margin-right">
+		<view class="cu-item">
+			<view class="cu-avatar round lg" style="background-image:url('{{picture.avatar}}');"></view>
+			<view class="content flex-sub">
+				<view class="text-grey">{{picture.user}}</view>
+				<view class="text-gray text-sm flex justify-between">
+					{{picture.time}}
+				</view>
+			</view>
+		</view>
+	</view>
+
+	<view class="bg-white padding-lr margin-left margin-right margin-top" wx:if="{{timeArea && haveTime>0}}">
+		<view class="solids-bottom padding-xs flex align-center">
+			<view class="flex-sub text-center">
+				<view class="padding">图片将会在{{haveTime}}秒后被清理</view>
+			</view>
+		</view>
+	</view>
+</view>
+<view wx:elif="{{main == 2}}">
+	<view class="bg-white padding-lr margin-left margin-right margin-top">
+		<view class="solids-bottom padding-xs flex align-center">
+			<view class="flex-sub text-center">
+				<view class="padding">无权限查看</view>
+			</view>
+		</view>
+	</view>
+</view>
